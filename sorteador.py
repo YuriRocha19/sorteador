@@ -6,7 +6,6 @@ import io
 st.set_page_config(page_title="Sorteio de Folhas", page_icon="📄")
 
 st.title("📄 Sorteador de Folhas e Números com Emoção!")
-st.write("O sistema vai sortear 10 casos, com 30 segundos entre cada sorteio. Prepare-se!")
 
 if st.button("🎲 Iniciar Sorteio"):
     st.warning("Sorteio iniciado! Aguarde o suspense e a revelação dos resultados...")
