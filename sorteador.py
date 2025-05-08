@@ -5,7 +5,6 @@ import io
 st.set_page_config(page_title="Sorteio Interativo", page_icon="🎲")
 
 st.title("📄 Sorteador de Folhas e Números (Interativo)")
-st.write("Clique no botão para revelar os sorteios um por um. Ao final dos 10, você poderá baixar o resultado.")
 
 # Inicializar variáveis na sessão
 if "resultados" not in st.session_state:
