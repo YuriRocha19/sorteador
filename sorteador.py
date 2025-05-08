@@ -1,35 +1,41 @@
 import streamlit as st
 import random
-import time
 import io
 
-st.set_page_config(page_title="Sorteio de Folhas", page_icon="📄")
+st.set_page_config(page_title="Sorteio Interativo", page_icon="🎲")
 
-st.title("📄 Sorteador de Folhas e Números com Emoção!")
+st.title("📄 Sorteador de Folhas e Números (Interativo)")
+st.write("Clique no botão para revelar os sorteios um por um. Ao final dos 10, você poderá baixar o resultado.")
 
-if st.button("🎲 Iniciar Sorteio"):
-    st.warning("Sorteio iniciado! Aguarde o suspense e a revelação dos resultados...")
+# Inicializar variáveis na sessão
+if "resultados" not in st.session_state:
+    st.session_state.resultados = []
+if "contador" not in st.session_state:
+    st.session_state.contador = 0
 
-    resultados = []
-
-    for i in range(10):
-        st.subheader(f"Sorteio {i+1}/10")
-
-        efeito = st.empty()  # Espaço reservado para efeito visual
-
-        # Efeito visual em etapas
-        efeito.markdown("🔄 Preparando sorteio...")
-        time.sleep(5)
-
+# Sorteio passo a passo
+if st.session_state.contador < 10:
+    if st.button("🎯 Sortear Próximo"):
         folha = random.randint(1, 80)
         numero = random.randint(1, 20)
-        resultados.append((folha, numero))
+        st.session_state.resultados.append((folha, numero))
+        st.session_state.contador += 1
 
-        efeito.markdown(f"🎉 **Resultado:** Folha: **{folha}**, Número: **{numero}**")
-        time.sleep(2)  # Pequena pausa antes do próximo sorteio
+# Mostrar sorteios feitos até agora
+if st.session_state.resultados:
+    st.subheader("📝 Resultados até agora:")
+    for i, (folha, numero) in enumerate(st.session_state.resultados, start=1):
+        st.markdown(f"**{i}.** Folha: **{folha}**, Número: **{numero}**")
 
-    # Gerar conteúdo do .txt
-    conteudo_txt = "\n".join([f"{i+1}. Folha: {folha}, Número: {numero}" for i, (folha, numero) in enumerate(resultados)])
+# Quando completar 10 sorteios, habilitar download
+if st.session_state.contador == 10:
+    st.success("🎉 Todos os 10 sorteios foram feitos!")
+
+    conteudo_txt = "\n".join([
+        f"{i+1}. Folha: {folha}, Número: {numero}"
+        for i, (folha, numero) in enumerate(st.session_state.resultados)
+    ])
+
     arquivo_txt = io.BytesIO()
     arquivo_txt.write(conteudo_txt.encode())
     arquivo_txt.seek(0)
@@ -40,3 +46,7 @@ if st.button("🎲 Iniciar Sorteio"):
         file_name="sorteio_resultados.txt",
         mime="text/plain"
     )
+
+    if st.button("🔁 Reiniciar Sorteio"):
+        st.session_state.resultados = []
+        st.session_state.contador = 0
