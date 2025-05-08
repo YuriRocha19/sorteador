@@ -1,34 +1,49 @@
-# app.py
-
 import streamlit as st
 import random
+import time
 import io
 
 st.set_page_config(page_title="Sorteio de Folhas", page_icon="📄")
 
-st.title("📄 Sorteador de Folhas e Números")
-st.write("Clique no botão abaixo para sortear 10 pares de folha (1 a 80) e número (1 a 20).")
+st.title("📄 Sorteador de Folhas e Números com Emoção!")
+st.write("O sistema vai sortear 10 casos, com 30 segundos entre cada sorteio. Prepare-se!")
 
-if st.button("🎲 Sortear 10 casos"):
+if st.button("🎲 Iniciar Sorteio"):
+    st.warning("Sorteio iniciado! Aguarde o suspense e a revelação dos resultados...")
+
     resultados = []
+
     for i in range(10):
+        st.subheader(f"Sorteio {i+1}/10")
+
+        efeito = st.empty()  # Espaço reservado para efeito visual
+
+        # Efeito visual em etapas
+        efeito.markdown("🔄 Preparando sorteio...")
+        time.sleep(5)
+
+        efeito.markdown("🔃 Girando...")
+        time.sleep(5)
+
+        efeito.markdown("⏳ Quase lá...")
+        time.sleep(5)
+
+        efeito.markdown("🎯 Sorte finalizando...")
+        time.sleep(15)
+
         folha = random.randint(1, 80)
         numero = random.randint(1, 20)
         resultados.append((folha, numero))
 
-    st.subheader("📝 Resultados dos Sorteios:")
-    for i, (folha, numero) in enumerate(resultados, start=1):
-        st.markdown(f"**{i}.** Folha: **{folha}**, Número: **{numero}**")
+        efeito.markdown(f"🎉 **Resultado:** Folha: **{folha}**, Número: **{numero}**")
+        time.sleep(2)  # Pequena pausa antes do próximo sorteio
 
     # Gerar conteúdo do .txt
     conteudo_txt = "\n".join([f"{i+1}. Folha: {folha}, Número: {numero}" for i, (folha, numero) in enumerate(resultados)])
-
-    # Criar arquivo em memória
     arquivo_txt = io.BytesIO()
     arquivo_txt.write(conteudo_txt.encode())
     arquivo_txt.seek(0)
 
-    # Botão de download
     st.download_button(
         label="📄 Baixar resultado como .txt",
         data=arquivo_txt,
