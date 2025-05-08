@@ -22,15 +22,6 @@ if st.button("🎲 Iniciar Sorteio"):
         efeito.markdown("🔄 Preparando sorteio...")
         time.sleep(5)
 
-        efeito.markdown("🔃 Girando...")
-        time.sleep(5)
-
-        efeito.markdown("⏳ Quase lá...")
-        time.sleep(5)
-
-        efeito.markdown("🎯 Sorte finalizando...")
-        time.sleep(15)
-
         folha = random.randint(1, 80)
         numero = random.randint(1, 20)
         resultados.append((folha, numero))
